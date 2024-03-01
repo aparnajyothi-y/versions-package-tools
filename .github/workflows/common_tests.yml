@@ -14,10 +14,11 @@ jobs:
       run: |
         Install-Module Pester -Force -Scope CurrentUser -RequiredVersion 4.10.1
         Install-Module Assert -Force -Scope CurrentUser
-        Update-Module -Name Assert -Force
+        
     - name: Run tests
       shell: pwsh  
       run: |
         Import-Module Pester
         Import-Module Assert
+        Update-Module -Name Assert -Force
         Invoke-Pester -EnableExit
