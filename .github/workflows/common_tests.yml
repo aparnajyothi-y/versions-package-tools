@@ -19,5 +19,5 @@ jobs:
       shell: pwsh  
       run: |
         Import-Module Pester
-        Import-Module Assert
+        Import-Module -Name Path\To\Module\Assert.psm1
         Invoke-Pester -EnableExit
