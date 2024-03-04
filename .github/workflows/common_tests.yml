@@ -10,14 +10,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install Pester
+      shell: pwsh
       run: |
         Install-Module Pester -Force -Scope CurrentUser -RequiredVersion 4.10.1
-        Install-Module Assert -Force -Scope CurrentUser
-        shell: pwsh
+        Install-Module Assert -Force -Scope CurrentUser -RequiredVersion 0.9.6
     - name: Run tests
-      
+      shell: pwsh  
       run: |
         Import-Module Pester
         Import-Module Assert 
         Invoke-Pester -EnableExit
-        shell: pwsh  
