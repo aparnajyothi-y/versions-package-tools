@@ -13,7 +13,7 @@ jobs:
       shell: pwsh
       run: |
         Install-Module Pester -Force -Scope CurrentUser -RequiredVersion 4.10.1
-        Install-Module -Name Assert -RequiredVersion 0.9.6 -Force -Scope CurrentUser
+        Install-Module -Name Assert #Requires -Version 0.9.6 -Force -Scope CurrentUser
     - name: Run tests
       shell: pwsh  
       run: |
