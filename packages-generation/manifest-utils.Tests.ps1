@@ -7,7 +7,7 @@ Describe "New-AssetItem" {
     It "use regex to parse all values in correct order" {
         $githubAsset = @{ name = "python-3.8.3-linux-16.04-x64.tar.gz"; browser_download_url = "long_url"; }
         $configuration = @{
-            regex = "python-\d+\.\d+\.\d+-(\w+)-([\w\.]+)?-?(x\d+)";
+            regex = "python-\d+\.\d+\.\d+-(\w+)-([\w\.]+)?-?(x\d+|arm64)";
             groups = [PSCustomObject]@{ platform = 1; platform_version = 2; arch = 3; };
         }
         $expectedOutput = [PSCustomObject]@{
