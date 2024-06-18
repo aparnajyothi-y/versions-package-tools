@@ -68,7 +68,7 @@ jobs:
         $toolVersion = "${{ inputs.tool-version }}"
         
         # Assuming GetBinariesUri is a function in the build script that returns the download URL
-        $downloadUrl = ./builders/build-$toolName.ps1 -Function GetBinariesUri -Version $toolVersion -Architecture $architecture
+        $downloadUrl = ./builders/build-${{ inputs.tool-name }}.ps1 -Function GetBinariesUri -Version $toolVersion -Architecture $architecture
         
         # Use Invoke-WebRequest to check if the URL is accessible
         try {
