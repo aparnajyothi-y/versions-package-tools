@@ -65,20 +65,19 @@ jobs:
       run: |
         
         # Assuming GetBinariesUri is a function in the build script that returns the download URL
-        $downloadUrl = ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
-                                                                    -Platform ${{ matrix.platform }} `
+        $downloadUrl = ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} 
                                                                     -Architecture ${{ matrix.architecture }}
-        
+        echo "downloadUrl :$downloadUrl"
         # Use Invoke-WebRequest to check if the URL is accessible
         try {
             $response = Invoke-WebRequest -Uri $downloadUrl -Method Head
             if ($response.StatusCode -eq 200) {
-                echo "::set-output name=skip::false"
+                echo "skip=false" | Out-File -FilePath $env:GITHUB_ENV -Append
             } else {
-                echo "::set-output name=skip::true"
+                echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
             }
         } catch {
-            echo "::set-output name=skip::true"
+            echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
     
 
