@@ -73,12 +73,12 @@ jobs:
         try {
             $response = Invoke-WebRequest -Uri $downloadUrl -Method Head
             if ($response.StatusCode -eq 200) {
-                echo "skip=false" | Out-File -FilePath $env:GITHUB_ENV -Append
+                echo "skip=false" 
             } else {
-                echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
+                echo "skip=true" 
             }
          } catch {
-                echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
+                echo "skip=true" 
          }
     
 
