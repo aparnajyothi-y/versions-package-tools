@@ -35,25 +35,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - os: ubuntu-latest
-          platform: linux
-          architecture: x64
-        - os: ubuntu-latest
-          platform: darwin
-          architecture: x64
-        - os: ubuntu-latest
-          platform: win32
-          architecture: x64
-        - os: ubuntu-latest
-          platform: win32
-          architecture: arm64
-        - os: ubuntu-latest
-          platform: linux
-          architecture: arm64
-        - os: ubuntu-latest
-          platform: darwin
-          architecture: arm64
+       platform: [linux, darwin, win32]
+       architecture: [x64, arm64]
             
     steps:
     - uses: actions/checkout@v4
@@ -153,7 +136,7 @@ jobs:
       env: 
         VERSION: ${{ inputs.tool-version }}
       run: |
-      
+        Install-Module Pester -Force -Scope CurrentUser -SkipPublisherCheck
         Import-Module Pester
         $toolName = (Get-Culture).TextInfo.ToTitleCase("${{ inputs.tool-name }}")
         Invoke-Pester -Script ./$toolName.Tests.ps1 -EnableExit
