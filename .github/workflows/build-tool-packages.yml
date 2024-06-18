@@ -63,24 +63,32 @@ jobs:
     - name: Validate package availability
       id: validate
       run: |
-        # Add your validation logic here
-        # If the package is available for the current architecture, set the output to 'true'
-        $packageAvailable = # your validation logic here
-        if ($packageAvailable) {
-            echo "::set-output name=packageAvailable::true"
-        } else {
-            echo "::set-output name=packageAvailable::false"
+        $architecture = "${{ matrix.architecture }}"
+        $toolName = "${{ inputs.tool-name }}"
+        $toolVersion = "${{ inputs.tool-version }}"
+        
+        # Assuming GetBinariesUri is a function in the build script that returns the download URL
+        $downloadUrl = ./builders/build-$toolName.ps1 -Function GetBinariesUri -Version $toolVersion -Architecture $architecture
+        
+        # Use Invoke-WebRequest to check if the URL is accessible
+        try {
+            $response = Invoke-WebRequest -Uri $downloadUrl -Method Head
+            if ($response.StatusCode -eq 200) {
+                echo "::set-output name=skip::false"
+            } else {
+                echo "::set-output name=skip::true"
+            }
+        } catch {
+            echo "::set-output name=skip::true"
         }
-      shell: pwsh
+    
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
-      if: steps.validate.outputs.packageAvailable == 'true'
+      if: steps.validate.outputs.skip != 'true'
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
                                                      -Platform ${{ matrix.platform }} `
                                                      -Architecture ${{ matrix.architecture }}
-                `
-                                        
 
     - name: Publish artifact
       uses: actions/upload-artifact@v3
