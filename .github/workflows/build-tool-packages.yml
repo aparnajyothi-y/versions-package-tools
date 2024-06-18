@@ -63,11 +63,10 @@ jobs:
     - name: Validate package availability
       id: validate
       run: |
-        
+        $builder = [WinNodeBuilder]::new()
         # Assuming GetBinariesUri is a function in the build script that returns the download URL
-        $downloadUrl = ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} 
-                                                                    -Platform ${{ matrix.platform }}
-                                                                    -Architecture ${{ matrix.architecture }}
+        $downloadUrl = $builder.GetBinariesUri();
+
         echo "downloadUrl :$downloadUrl"
         # Use Invoke-WebRequest to check if the URL is accessible
         try {
