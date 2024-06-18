@@ -65,8 +65,7 @@ jobs:
       run: |
         $builder = [WinNodeBuilder]::new()
         # Assuming GetBinariesUri is a function in the build script that returns the download URL
-        $downloadUrl = $builder.GetBinariesUri();
-
+         $downloadUrl = ./builders/build-$toolName.ps1 -Function CheckBinariesUri -Version $toolVersion -Architecture $architecture
         echo "downloadUrl :$downloadUrl"
         # Use Invoke-WebRequest to check if the URL is accessible
         try {
