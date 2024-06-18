@@ -66,6 +66,7 @@ jobs:
         
         # Assuming GetBinariesUri is a function in the build script that returns the download URL
         $downloadUrl = ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} 
+                                                                    -Platform ${{ matrix.platform }}
                                                                     -Architecture ${{ matrix.architecture }}
         echo "downloadUrl :$downloadUrl"
         # Use Invoke-WebRequest to check if the URL is accessible
@@ -82,7 +83,7 @@ jobs:
     
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
-      if: steps.validate.outputs.skip != 'true'
+      if: steps.validate.outputs.skip = 'false'
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
                                                      -Platform ${{ matrix.platform }} `
