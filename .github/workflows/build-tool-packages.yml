@@ -27,7 +27,6 @@ defaults:
 
 
 jobs:
-  jobs:
   build:
     name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
     runs-on: ubuntu-latest
@@ -61,18 +60,26 @@ jobs:
       with:
         submodules: true
 
-    - name: Validate arm64 package availability
+    - name: Validate package availability
       id: validate
       run: |
         # Add your validation logic here
-        # If the package is available for arm64, set the output to 'true'
-        echo "::set-output name=packageAvailable::true"
-      
+        # If the package is available for the current architecture, set the output to 'true'
+        $packageAvailable = # your validation logic here
+        if ($packageAvailable) {
+            echo "::set-output name=packageAvailable::true"
+        } else {
+            echo "::set-output name=packageAvailable::false"
+        }
+      shell: pwsh
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
       if: steps.validate.outputs.packageAvailable == 'true'
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
+                                                     -Platform ${{ matrix.platform }} `
+                                                     -Architecture ${{ matrix.architecture }}
+                `
                                         
 
     - name: Publish artifact
