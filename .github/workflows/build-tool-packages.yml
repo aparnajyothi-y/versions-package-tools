@@ -60,31 +60,11 @@ jobs:
       with:
         submodules: true
 
-    - name: Validate package availability
-      id: validate
+    - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
       run: |
-        
-        # Assuming GetBinariesUri is a function in the build script that returns the download URL
-         $downloadUrl = ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
-                                                                      -Platform ${{ matrix.platform }} `
-                                                                      -Architecture ${{ matrix.architecture }}
-        echo "downloadUrl :$downloadUrl"
-        # Use Invoke-WebRequest to check if the URL is accessible
-        try {
-            $response = Invoke-WebRequest -Uri $downloadUrl -Method Head
-            if ($response.StatusCode -eq 200) {
-                echo "skip=false" 
-                run: |
-                 ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
-                                                              -Platform ${{ matrix.platform }} `
-                                                              -Architecture ${{ matrix.architecture }}
-            } else {
-                echo "skip=true" 
-            }
-         } catch {
-                echo "skip=true" 
-         }
-    
+        ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
+                                                     -Platform ${{ matrix.platform }} `
+                                                     -Architecture ${{ matrix.architecture }}
 
     - name: Publish artifact
       uses: actions/upload-artifact@v3
