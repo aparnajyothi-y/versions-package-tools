@@ -83,7 +83,7 @@ jobs:
     
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
-      if: steps.validate.outputs.skip = 'false'
+      if: steps.validate.outputs.skip != 'true'
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
                                                      -Platform ${{ matrix.platform }} `
