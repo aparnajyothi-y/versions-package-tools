@@ -77,9 +77,9 @@ jobs:
             } else {
                 echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
             }
-        } catch {
-            echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
-        }
+         } catch {
+                echo "skip=true" | Out-File -FilePath $env:GITHUB_ENV -Append
+         }
     
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
